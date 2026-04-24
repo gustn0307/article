@@ -1,7 +1,7 @@
 package articleProject.dto;
 
 public class CommentDto {
-    private final Long commentId;
+    private Long commentId;
     private Long articleId;
     private String name;
     private String content;

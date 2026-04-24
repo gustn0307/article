@@ -23,4 +23,8 @@ public class ArticleService {
         articleDto.setUpdatedDate(LocalDateTime.now());
         repository.newArticle(articleDto);
     }
+
+    public ArticleDto detail(Long id) {
+        return repository.detail(id);
+    }
 }
