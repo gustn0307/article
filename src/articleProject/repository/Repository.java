@@ -172,4 +172,20 @@ public class Repository {
         }
         return articleDto;
     }
+
+    // DELETE FROM comments WHERE comment_id=?
+    public void deleteComment(Long commentId) {
+        PreparedStatement psmt = null;
+
+        try {
+            String sql = "DELETE FROM comments WHERE comment_id=?";
+            psmt = conn.prepareStatement(sql);
+            psmt.setLong(1, commentId);
+
+            psmt.executeUpdate();  // SQL 쿼리 실행(테이블 상태가 바뀌는 쿼리는 executeUpdate() 메서드 사용)
+            psmt.close(); // 사용 후 닫아주기
+        } catch (Exception e) {
+            System.out.println("deleteComment 오류: " + e.getMessage());
+        }
+    }
 }

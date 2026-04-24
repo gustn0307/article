@@ -37,24 +37,23 @@ public class ArticleMain {
                 case 0: // 전체보기
                     articleView.showAll(); // 구현 완료
                     break;
-                case 1: // 새 기사 작성
+                case 1: // 새 글 작성
                     articleView.showNewArticle(); // 구현 완료
                     break;
-                case 2: // 게시글 상세 + 댓글 CRUD
+                case 2: // 게시글 상세 + 댓글 CR 구현완료/UD 구현 미완료
                     articleView.showDetail();
                     break;
-                case 3:
+                case 3: // 게시글 삭제
                     articleView.showDelete();
                     break;
-                case 4:
+                case 4: // 게시글 수정
                     articleView.showUpdate();
                     break;
                 case 5:
                     System.out.println("종료합니다.");
                     DBConn.close();
                     return;
-                default: // 위의 do-while문때문에 input값은 0~5 중 하나이므로 default 필요없음
-
+                default: // 위의 do-while문때문에 input값은 0~5 중 하나이므로 default 필요없음(생략 가능)
             }
         }
     }
