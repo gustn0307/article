@@ -40,11 +40,11 @@ public class ArticleMain {
                 case 1: // 새 글 작성
                     articleView.showNewArticle(); // 구현 완료
                     break;
-                case 2: // 게시글 상세 + 댓글 CR 구현완료/UD 구현 미완료
-                    articleView.showDetail();
+                case 2: // 게시글 상세 + 댓글 CRUD
+                    articleView.showDetail(); // 구현 완료
                     break;
                 case 3: // 게시글 삭제
-                    articleView.showDelete();
+                    articleView.showDelete(); // 구현 완료
                     break;
                 case 4: // 게시글 수정
                     articleView.showUpdate();
