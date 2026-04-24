@@ -1,20 +1,25 @@
 package articleProject.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleDto {
-    private final Long id;
+    private Long id;
     private String name;
     private String title;
     private String content;
-    private List<CommentDto> commentList;
+    private List<CommentDto> commentList = new ArrayList<>();
     private LocalDateTime insertedDate;
     private LocalDateTime updatedDate;
 
     // getter/setter
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -101,7 +106,17 @@ public class ArticleDto {
     }
 
     // 새 글 작성용 펙토리 메서드
-    public ArticleDto makeArticleDto(Long id, String name, String title, String content, LocalDateTime insertedDate){
+    public ArticleDto makeArticleDto(Long id, String name, String title, String content, LocalDateTime insertedDate) {
         return new ArticleDto(id, name, title, content, insertedDate);
+    }
+
+    // 댓글 추가 메서드
+    public void addComments(CommentDto commentDto){
+        commentList.add(commentDto);
+    }
+
+    @Override
+    public String toString() {
+        return id + "\t" + name + "\t" + title + "\t" + updatedDate;
     }
 }

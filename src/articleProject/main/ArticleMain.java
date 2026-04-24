@@ -1,6 +1,7 @@
 package articleProject.main;
 
 import articleProject.db.DBConn;
+import articleProject.repository.Repository;
 import articleProject.service.ArticleService;
 import articleProject.service.CommentService;
 import articleProject.view.ArticleView;
@@ -15,7 +16,8 @@ public class ArticleMain {
         Scanner sc = new Scanner(System.in); // 사용자에게 입력을 받기 위한 Scanner 객체 sc 생성
 
         // 필요한 인스턴스들 생성
-        ArticleService articleService = new ArticleService();
+        Repository repository = new Repository(connection);
+        ArticleService articleService = new ArticleService(repository);
         CommentService commentService = new CommentService();
         ArticleView articleView = new ArticleView(sc, articleService, commentService);
 
@@ -33,7 +35,7 @@ public class ArticleMain {
 
             switch (input) {
                 case 0: // 전체보기
-                    articleView.showAll();
+                    articleView.showAll(); // 구현 완료
                     break;
                 case 1:
                     articleView.showNewArticle();
