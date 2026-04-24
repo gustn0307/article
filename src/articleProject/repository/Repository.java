@@ -6,6 +6,7 @@ import articleProject.dto.CommentDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class Repository {
             String sql = "SELECT * FROM article ORDER BY id"; // 쿼리
             psmt = conn.prepareStatement(sql);
 
-            rs = psmt.executeQuery(); // SQL 쿼리 실행 결과를 rs에 받는다
+            rs = psmt.executeQuery(); // SQL 쿼리 실행 결과를 rs에 받는다 테이블 상태가 바뀌지 않는 쿼리는 executeQuery() 메서드 사용
 
             // rs에 들어간 결과를 articleList 리스트에 담는다.
             while (rs.next()) { // 다음 레코드가 있으면 반복문 수행
@@ -86,4 +87,24 @@ public class Repository {
         return getArticleComments(articleList);
     }
 
+    // 'INSERT INTO article(name, title, content, inserted_date, updated_date) VALUES(?,?,?,?,?)' 쿼리로 article 추가
+    public void newArticle(ArticleDto articleDto) {
+        PreparedStatement psmt = null; // 쿼리를 실행할 도구
+        ResultSet rs = null; // 레코드 셋 결과를 담을 도구
+
+        try {
+            String sql = "INSERT INTO article(name, title, content, inserted_date, updated_date) VALUES(?,?,?,?,?)"; // 쿼리
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, articleDto.getName());
+            psmt.setString(2, articleDto.getTitle());
+            psmt.setString(3, articleDto.getContent());
+            psmt.setTimestamp(4, Timestamp.valueOf(articleDto.getInsertedDate()));
+            psmt.setTimestamp(5, Timestamp.valueOf(articleDto.getUpdatedDate()));
+
+            psmt.executeUpdate(); // SQL 쿼리 실행(테이블 상태가 바뀌는 쿼리는 executeUpdate() 메서드 사용)
+            psmt.close(); // 사용 후 닫아주기
+        } catch (Exception e) {
+            System.out.println("newArticle() 오류: " + e.getMessage());
+        }
+    }
 }
