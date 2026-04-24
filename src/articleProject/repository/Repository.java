@@ -205,4 +205,40 @@ public class Repository {
             System.out.println("updateComment() 오류: " + e.getMessage());
         }
     }
+
+    // DELETE FROM article WHERE id=?
+    public void delete(Long deleteId) {
+        PreparedStatement psmt = null;
+        try {
+            String sql = "DELETE FROM article WHERE id=?"; // 쿼리
+            psmt = conn.prepareStatement(sql);
+            psmt.setLong(1, deleteId);
+
+            psmt.executeUpdate(); // 게시글 삭제 SQL 쿼리 실행(테이블 상태가 바뀌는 쿼리는 executeUpdate() 메서드 사용)
+            psmt.close();
+        } catch (Exception e) {
+            System.out.println("delete 오류: "+e.getMessage());
+        }
+    }
+
+    // UPDATE article SET name=?, title=?, content=?, inserted_date=?, updated_date=? WHERE id=?
+    public void update(ArticleDto updateArticleDto) {
+        PreparedStatement psmt = null; // 쿼리를 실행할 도구
+
+        try {
+            String sql = "UPDATE article SET name=?, title=?, content=?, inserted_date=?, updated_date=? WHERE id=?"; // 쿼리
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, updateArticleDto.getName());
+            psmt.setString(2, updateArticleDto.getTitle());
+            psmt.setString(3, updateArticleDto.getContent());
+            psmt.setTimestamp(4, Timestamp.valueOf(updateArticleDto.getInsertedDate()));
+            psmt.setTimestamp(5, Timestamp.valueOf(updateArticleDto.getUpdatedDate()));
+            psmt.setLong(6, updateArticleDto.getId());
+
+            psmt.executeUpdate(); // 댓글 추가 SQL 쿼리 실행(테이블 상태가 바뀌는 쿼리는 executeUpdate() 메서드 사용)
+            psmt.close(); // 사용 후 닫아주기
+        } catch (Exception e) {
+            System.out.println("updateComment() 오류: " + e.getMessage());
+        }
+    }
 }

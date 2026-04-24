@@ -27,4 +27,13 @@ public class ArticleService {
     public ArticleDto detail(Long id) {
         return repository.detail(id);
     }
+
+    public void delete(Long deleteId) {
+        repository.delete(deleteId);
+    }
+
+    public void update(ArticleDto updateArticleDto) {
+        updateArticleDto.setUpdatedDate(LocalDateTime.now());
+        repository.update(updateArticleDto);
+    }
 }
