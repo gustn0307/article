@@ -71,6 +71,9 @@ public class ArticleDto {
     }
 
     // 생성자들
+    public ArticleDto() {
+    }
+
     public ArticleDto(Long id, String name, String title, String content) {
         this.id = id;
         this.name = name;

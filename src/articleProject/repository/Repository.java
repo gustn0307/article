@@ -28,7 +28,7 @@ public class Repository {
         ResultSet rs = null; // 레코드 셋 결과를 담을 도구
 
         try {
-            for (ArticleDto articleDto : articleDtoList){
+            for (ArticleDto articleDto : articleDtoList) {
                 String sql = "SELECT * FROM comments WHERE article_id=?";
                 psmt = conn.prepareStatement(sql);
                 psmt.setLong(1, articleDto.getId());
@@ -36,7 +36,7 @@ public class Repository {
                 rs = psmt.executeQuery();
 
                 // rs에 들어간 결과를 addComments() 메서드로 CommentDto의 CommentList 리스트에 담는다.
-                while (rs.next()){ // 다음 레코드가 있으면 반복문 수행
+                while (rs.next()) { // 다음 레코드가 있으면 반복문 수행
                     CommentDto commentDto = new CommentDto(
                             rs.getLong("comment_id"),
                             rs.getLong("article_id"),
@@ -90,7 +90,6 @@ public class Repository {
     // 'INSERT INTO article(name, title, content, inserted_date, updated_date) VALUES(?,?,?,?,?)' 쿼리로 article 추가
     public void newArticle(ArticleDto articleDto) {
         PreparedStatement psmt = null; // 쿼리를 실행할 도구
-        ResultSet rs = null; // 레코드 셋 결과를 담을 도구
 
         try {
             String sql = "INSERT INTO article(name, title, content, inserted_date, updated_date) VALUES(?,?,?,?,?)"; // 쿼리
@@ -106,5 +105,71 @@ public class Repository {
         } catch (Exception e) {
             System.out.println("newArticle() 오류: " + e.getMessage());
         }
+    }
+
+    // INSERT INTO comments(name, content, article_id) VALUES(?,?,?) 쿼리 실행
+    public void insertComment(CommentDto commentDto) {
+        PreparedStatement psmt = null; // 쿼리를 실행할 도구
+
+        try {
+            String sql = " INSERT INTO comments(name, content, article_id) VALUES(?,?,?)"; // 쿼리
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, commentDto.getName());
+            psmt.setString(2, commentDto.getContent());
+            psmt.setLong(3, commentDto.getArticleId());
+
+            psmt.executeUpdate(); // 댓글 추가 SQL 쿼리 실행(테이블 상태가 바뀌는 쿼리는 executeUpdate() 메서드 사용)
+            psmt.close(); // 사용 후 닫아주기
+        } catch (Exception e) {
+            System.out.println("insertComment() 오류: " + e.getMessage());
+        }
+    }
+
+    // SELECT * FROM article WHERE id=? 쿼리 실행
+    public ArticleDto detail(Long id) {
+        ArticleDto articleDto = new ArticleDto();
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT * FROM article WHERE id=?"; // 해당 ID를 가진 기사 가져오기
+            psmt = conn.prepareStatement(sql);
+            psmt.setLong(1, id);
+
+            rs = psmt.executeQuery();
+
+            while (rs.next()) {
+                articleDto.setId(rs.getLong("id"));
+                articleDto.setName(rs.getString("name"));
+                articleDto.setTitle(rs.getString("title"));
+                articleDto.setContent(rs.getString("content"));
+                articleDto.setInsertedDate(rs.getObject("inserted_date", LocalDateTime.class));
+                articleDto.setUpdatedDate(rs.getObject("inserted_date", LocalDateTime.class));
+            }
+
+            // 해당 기사의 댓글들도 가져오기
+            sql = "SELECT * FROM comments WHERE article_id=?";
+            psmt = conn.prepareStatement(sql);
+            psmt.setLong(1, articleDto.getId());
+
+            rs = psmt.executeQuery();
+
+            // rs에 들어간 결과를 addComments() 메서드로 CommentDto의 CommentList 리스트에 담는다.
+            while (rs.next()) { // 다음 레코드가 있으면 반복문 수행
+                CommentDto commentDto = new CommentDto(
+                        rs.getLong("comment_id"),
+                        rs.getLong("article_id"),
+                        rs.getString("name"),
+                        rs.getString("content")
+                ); // DB에서 읽어온 정보들을 가진 CommentDto 객체 생성
+                articleDto.addComments(commentDto); // DB에서 읽어온 정보들을 가진 CommentDto를 articleDto의 CommentList에 추가
+            }
+
+            psmt.close(); // 사용 후 닫아주기
+            rs.close(); // 사용 후 닫아주기
+        } catch (Exception e) {
+            System.out.println("detail() 오류: " + e.getMessage());
+        }
+        return articleDto;
     }
 }

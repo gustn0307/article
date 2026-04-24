@@ -18,7 +18,7 @@ public class ArticleMain {
         // 필요한 인스턴스들 생성
         Repository repository = new Repository(connection);
         ArticleService articleService = new ArticleService(repository);
-        CommentService commentService = new CommentService();
+        CommentService commentService = new CommentService(repository);
         ArticleView articleView = new ArticleView(sc, articleService, commentService);
 
         while (true) {
@@ -38,9 +38,9 @@ public class ArticleMain {
                     articleView.showAll(); // 구현 완료
                     break;
                 case 1: // 새 기사 작성
-                    articleView.showNewArticle();
+                    articleView.showNewArticle(); // 구현 완료
                     break;
-                case 2:
+                case 2: // 게시글 상세 + 댓글 CRUD
                     articleView.showDetail();
                     break;
                 case 3:
@@ -53,8 +53,8 @@ public class ArticleMain {
                     System.out.println("종료합니다.");
                     DBConn.close();
                     return;
-                default:
-                    System.out.println("1 ~ 5 중 하나를 입력해주세요");
+                default: // 위의 do-while문때문에 input값은 0~5 중 하나이므로 default 필요없음
+
             }
         }
     }
