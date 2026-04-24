@@ -188,4 +188,21 @@ public class Repository {
             System.out.println("deleteComment 오류: " + e.getMessage());
         }
     }
+
+    // UPDATE comments SET content=? WHERE comment_id=?
+    public void updateComment(CommentDto updateCommentDto) {
+        PreparedStatement psmt = null; // 쿼리를 실행할 도구
+
+        try {
+            String sql = "UPDATE comments SET content=? WHERE comment_id=?"; // 쿼리
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, updateCommentDto.getContent());
+            psmt.setLong(2, updateCommentDto.getCommentId());
+
+            psmt.executeUpdate(); // 댓글 추가 SQL 쿼리 실행(테이블 상태가 바뀌는 쿼리는 executeUpdate() 메서드 사용)
+            psmt.close(); // 사용 후 닫아주기
+        } catch (Exception e) {
+            System.out.println("updateComment() 오류: " + e.getMessage());
+        }
+    }
 }

@@ -102,14 +102,40 @@ public class ArticleView {
                 commentService.commentAdd(commentDto);
                 break;
             case 2: // 댓글 수정
+                if (!articleDto.getCommentList().isEmpty()) { // 댓글 목록이 비어있는지 확인
+                    System.out.print("수정할 댓글 번호 입력: ");
+                    Long updateCommentId = sc.nextLong();
+                    sc.nextLine(); // 버퍼 비우기
+                    String originName = "";
+
+                    // 수정 전 현재 정보 보여주기
+                    for (CommentDto commentDto1 : articleDto.getCommentList()) {
+                        if (commentDto1.getCommentId().equals(updateCommentId)) {
+                            originName = commentDto1.getName();
+                            System.out.println("수정 전 내용: " + commentDto1.getContent());
+                        }
+                    }
+
+                    // 수정할 내용 입력 받기
+                    System.out.print("내용 수정 입력: ");
+                    String updateContent = sc.nextLine();
+
+                    CommentDto updateCommentDto = new CommentDto(updateCommentId, articleDto.getId(), originName, updateContent);
+                    commentService.commentUpdate(updateCommentDto);
+
+                    System.out.println(updateCommentId + " 번 댓글이 수정되었습니다.");
+                    break;
+                }
+                System.out.println("수정할 댓글이 없습니다.");
                 break;
             case 3: // 댓글 삭제
                 if (!articleDto.getCommentList().isEmpty()) { // 댓글 목록이 비어있는지 확인
                     System.out.print("삭제할 댓글 번호 입력: ");
-                    Long commentId = sc.nextLong();
+                    Long deleteCommentId = sc.nextLong();
                     sc.nextLine(); // 버퍼 비우기
-                    commentService.commentDelete(commentId);
-                    System.out.println(commentId + " 번째 댓글이 삭제되었습니다.");
+
+                    commentService.commentDelete(deleteCommentId);
+                    System.out.println(deleteCommentId + " 번 댓글이 삭제되었습니다.");
                     break;
                 }
                 System.out.println("삭제할 댓글이 없습니다.");
