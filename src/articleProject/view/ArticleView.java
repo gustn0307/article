@@ -43,6 +43,18 @@ public class ArticleView {
     }
 
     public void showNewArticle() {
+        // ## 추후 validation 클래스 추가해서 입력 예외 처리 기능 추가하기 ##
+        System.out.println("새글 입력창입니다.");
+        System.out.print("작성자: ");
+        String name = sc.nextLine();
+        System.out.print("제목: ");
+        String title = sc.nextLine();
+        System.out.print("내용: ");
+        String content = sc.nextLine();
+
+        ArticleDto articleDto = new ArticleDto(name, title, content);
+
+        articleService.newArticle(articleDto);
     }
 
     public void showDetail() {

@@ -78,6 +78,12 @@ public class ArticleDto {
         this.content = content;
     }
 
+    public ArticleDto(String name, String title, String content) {
+        this.name = name;
+        this.title = title;
+        this.content = content;
+    }
+
     public ArticleDto(Long id, String name, String title, String content, LocalDateTime insertedDate) {
         this.id = id;
         this.name = name;

@@ -37,7 +37,7 @@ public class ArticleMain {
                 case 0: // 전체보기
                     articleView.showAll(); // 구현 완료
                     break;
-                case 1:
+                case 1: // 새 기사 작성
                     articleView.showNewArticle();
                     break;
                 case 2:
