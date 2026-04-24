@@ -15,7 +15,7 @@ public class DBConn {
     public static Connection getConnection() {
         if (dbConn == null) { // 이미 연결이 되어있지 않다면 연결
             try {
-                String dbDriver = "com.mysql.jdbc.Driver"; // 드라이버 경로
+                String dbDriver = "com.mysql.cj.jdbc.Driver"; // 드라이버 경로
                 String dbUrl = "jdbc:mysql://localhost:3306/article_db"; // DB 경로
                 String dbUser = "root"; // 유저 아이디
                 String dbPassword = "1111"; // 유저 비밀번호
