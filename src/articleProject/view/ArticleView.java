@@ -23,7 +23,7 @@ public class ArticleView {
     // 전체 게시글 보기(댓글 포함)
     public void showAll() {
         articles = articleService.all();
-        
+
         if (!articles.isEmpty()) { // 게시글 목록이 비어있는지 확인
             System.out.println("=============================================");
             System.out.println("id      name         title         작성일");
@@ -77,7 +77,7 @@ public class ArticleView {
             for (CommentDto commentDto : articleDto.getCommentList()) {
                 System.out.println(commentDto);
             }
-        }else {
+        } else {
             System.out.println("해당 게시글에는 댓글이 없습니다.");
         }
 
@@ -104,6 +104,15 @@ public class ArticleView {
             case 2: // 댓글 수정
                 break;
             case 3: // 댓글 삭제
+                if (!articleDto.getCommentList().isEmpty()) { // 댓글 목록이 비어있는지 확인
+                    System.out.print("삭제할 댓글 번호 입력: ");
+                    Long commentId = sc.nextLong();
+                    sc.nextLine(); // 버퍼 비우기
+                    commentService.commentDelete(commentId);
+                    System.out.println(commentId + " 번째 댓글이 삭제되었습니다.");
+                    break;
+                }
+                System.out.println("삭제할 댓글이 없습니다.");
                 break;
             case 4: // 돌아가기
                 return;
@@ -112,8 +121,11 @@ public class ArticleView {
     }
 
     public void showDelete() {
+        showAll(); // 삭제 전에 기존 게시들 모두 보여주기
+
     }
 
     public void showUpdate() {
+        showAll(); // 수정 전에 기존 게시들 모두 보여주기
     }
 }

@@ -13,4 +13,8 @@ public class CommentService {
     public void commentAdd(CommentDto commentDto) {
         repository.insertComment(commentDto);
     }
+
+    public void commentDelete(Long commentId) {
+        repository.deleteComment(commentId);
+    }
 }
