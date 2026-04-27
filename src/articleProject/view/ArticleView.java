@@ -2,6 +2,8 @@ package articleProject.view;
 
 import articleProject.dto.ArticleDto;
 import articleProject.dto.CommentDto;
+import articleProject.exception.InputValidation;
+import articleProject.exception.MyException;
 import articleProject.service.ArticleService;
 import articleProject.service.CommentService;
 
@@ -13,6 +15,7 @@ public class ArticleView {
     private final Scanner sc;
     private final ArticleService articleService;
     private final CommentService commentService;
+    private InputValidation validation = new InputValidation(); // 검증 인스턴스 생성
 
     public ArticleView(Scanner sc, ArticleService articleService, CommentService commentService) {
         this.sc = sc;
@@ -46,8 +49,19 @@ public class ArticleView {
     public void showNewArticle() {
         // ## 추후 validation 클래스 추가해서 입력 예외 처리 기능 추가하기 ##
         System.out.println("새글 입력창입니다.");
-        System.out.print("작성자: ");
-        String name = sc.nextLine();
+        boolean check = false;
+        String name = "";
+        do {
+            try {
+                System.out.print("작성자: ");
+                name = sc.nextLine();
+                validation.nameCheck(name);
+                check = true;
+            } catch (MyException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (!check);
+
         System.out.print("제목: ");
         String title = sc.nextLine();
         System.out.print("내용: ");
@@ -107,8 +121,19 @@ public class ArticleView {
 
                     switch (cChoice) {
                         case 1: // 댓글 입력
-                            System.out.print("댓글 등록자 이름: ");
-                            String name = sc.nextLine();
+                            boolean check = false;
+                            String name = "";
+                            do {
+                                try {
+                                    System.out.print("댓글 등록자 이름: ");
+                                    name = sc.nextLine();
+                                    validation.nameCheck(name);
+                                    check = true;
+                                } catch (MyException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } while (!check);
+
                             System.out.print("댓글 내용: ");
                             String content = sc.nextLine();
                             CommentDto commentDto = new CommentDto(null, articleDto.getId(), name, content);
@@ -210,7 +235,7 @@ public class ArticleView {
             for (ArticleDto articleDto : articles) { // 게시글 목록에 입력받은 id를 가진 ArticleDto가 있는지 확인
                 if (articleDto.getId().equals(updateId)) {
                     System.out.println("현재 제목: " + articleDto.getTitle());
-                    System.out.println("현재 내용: "+articleDto.getContent());
+                    System.out.println("현재 내용: " + articleDto.getContent());
                     System.out.println();
                     System.out.print("수정할 제목: ");
                     String updateTitle = sc.nextLine();
