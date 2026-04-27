@@ -5,6 +5,7 @@ import articleProject.dto.CommentDto;
 import articleProject.service.ArticleService;
 import articleProject.service.CommentService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,7 +13,6 @@ public class ArticleView {
     private final Scanner sc;
     private final ArticleService articleService;
     private final CommentService commentService;
-    private List<ArticleDto> articles; // ## 이거 없애는 작업 필요 ##
 
     public ArticleView(Scanner sc, ArticleService articleService, CommentService commentService) {
         this.sc = sc;
@@ -22,6 +22,7 @@ public class ArticleView {
 
     // 전체 게시글 보기(댓글 포함)
     public void showAll() {
+        List<ArticleDto> articles = new ArrayList<>();
         articles = articleService.all();
 
         if (!articles.isEmpty()) { // 게시글 목록이 비어있는지 확인
@@ -52,6 +53,7 @@ public class ArticleView {
         System.out.print("내용: ");
         String content = sc.nextLine();
 
+        List<ArticleDto> articles = new ArrayList<>();
         ArticleDto articleDto = new ArticleDto(name, title, content);
 
         articleService.newArticle(articleDto);
@@ -59,6 +61,8 @@ public class ArticleView {
     }
 
     public void showDetail() {
+        List<ArticleDto> articles = new ArrayList<>();
+        articles = articleService.all();
         if (!articles.isEmpty()) { // 게시글 목록이 비어있는지 확인
             Long id = -1L;
             do {
@@ -161,6 +165,8 @@ public class ArticleView {
     }
 
     public void showDelete() {
+        List<ArticleDto> articles = new ArrayList<>();
+        articles = articleService.all();
         if (!articles.isEmpty()) {  // 게시글 목록이 비어있는지 확인
             showAll(); // 삭제 전에 기존 게시들 모두 보여주기
 
@@ -186,6 +192,8 @@ public class ArticleView {
     }
 
     public void showUpdate() {
+        List<ArticleDto> articles = new ArrayList<>();
+        articles = articleService.all();
         if (!articles.isEmpty()) {  // 게시글 목록이 비어있는지 확인
             showAll(); // 수정 전에 기존 게시들 모두 보여주기
 
